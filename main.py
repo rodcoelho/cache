@@ -9,12 +9,15 @@ class NCache:
     def __init__(self, n):
         self.cache = {}
         self.cache_size = n
+        # TODO see TODO's below
+        self.key_type = None
+        self.value_type = None
 
     def __contains__(self, key):
         return key in self.cache
 
     def add_lru(self, key, value):
-        key, value = str(key), str(value)
+        # TODO check key/values for rules
         if len(self.cache) >= self.cache_size and key not in self.cache:
             self.remove_oldest_lru()
 
@@ -30,7 +33,7 @@ class NCache:
         self.cache.pop(oldest)
 
     def add_mru(self, key, value):
-        key, value = str(key), str(value)
+        # TODO check key/values for rules
         if len(self.cache) >= self.cache_size and key not in self.cache:
             self.remove_newest_mru()
 
