@@ -29,7 +29,6 @@ class NCache:
                 oldest = key
         self.cache.pop(oldest)
 
-
     def add_mru(self, key, value):
         key, value = str(key), str(value)
         if len(self.cache) >= self.cache_size and key not in self.cache:
