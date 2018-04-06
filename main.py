@@ -10,6 +10,7 @@ class NCache:
         self.cache = {}
         self.cache_size = n
         # TODO see TODO's below
+        # use isinstance() or type() for key/value types
         self.key_type = None
         self.value_type = None
 
