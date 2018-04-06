@@ -30,11 +30,28 @@ class NCache:
         self.cache.pop(oldest)
 
 
+    def add_mru(self, key, value):
+        key, value = str(key), str(value)
+        if len(self.cache) >= self.cache_size and key not in self.cache:
+            self.remove_newest_mru()
+
+        self.cache[key] = {'conventional_time': datetime.datetime.now(), 'unix_time': time.time(), 'value': value}
+
+    def remove_newest_mru(self):
+        newest = None
+        for key in self.cache:
+            if newest is None:
+                newest = key
+            elif self.cache[key]['conventional_time'] > self.cache[newest]['conventional_time']:
+                newest = key
+        self.cache.pop(newest)
+
+
 if __name__ == '__main__':
     cache_test = NCache(5)
     keyz = [x for x in range(1, 10)]
     valuez = [x for x in range(101, 110)]
     for _, __ in zip(keyz, valuez):
-        cache_test.add_lru(_, __)
+        cache_test.add_mru(_, __)
     pprint(cache_test.cache)
 
