@@ -19,6 +19,12 @@ class AbstractBaseNCache:
     def __contains__(self, key):
         return key in self.cache
 
+    def parent_add_in_next_iteration(self):
+        # change this function to add_to_cache
+        # see this link for next steps - https://stackoverflow.com/a/38262573/9220192
+        # goal is to create add_to_cache
+        pass
+
 
 class NCacheLRU(AbstractBaseNCache):
     def add_to_cache(self, key, value):
