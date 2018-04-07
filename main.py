@@ -15,13 +15,15 @@ class AbstractBaseNCache:
         self.key_type = None
         self.value_type = None
 
-    # def __contains__(self, key):
-    #     return key in self.cache
+    # __contains__ allows us to do something like: if x in object --> returns True or False
+    def __contains__(self, key):
+        return key in self.cache
 
 
 class NCacheLRU(AbstractBaseNCache):
     def add_to_cache(self, key, value):
-        # TODO check key/values for rules
+        # TODO 1 check key/values for rules
+        # TODO 2 improve the if statement to take into account what would happen if cache HAS the key
         if len(self.cache) >= self.cache_size and key not in self.cache:
             self.remove_oldest_lru()
 
@@ -39,7 +41,8 @@ class NCacheLRU(AbstractBaseNCache):
 
 class NCacheMRU(AbstractBaseNCache):
     def add_to_cache(self, key, value):
-        # TODO check key/values for rules
+        # TODO 1 check key/values for rules
+        # TODO 2 improve the if statement to take into account what would happen if cache HAS the key
         if len(self.cache) >= self.cache_size and key not in self.cache:
             self.remove_newest_mru()
 
