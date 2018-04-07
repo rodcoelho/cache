@@ -1,15 +1,12 @@
 #!/usr/bin/env/ python3
 
-import time, datetime
+import time
+import datetime
+
 from pprint import pprint
 
 
 class AbstractBaseNCache:
-    pass
-
-
-class NCache(AbstractBaseNCache):
-
     def __init__(self, n):
         self.cache = {}
         self.cache_size = n
@@ -21,7 +18,9 @@ class NCache(AbstractBaseNCache):
     # def __contains__(self, key):
     #     return key in self.cache
 
-    def add_lru(self, key, value):
+
+class NCacheLRU(AbstractBaseNCache):
+    def add_to_cache(self, key, value):
         # TODO check key/values for rules
         if len(self.cache) >= self.cache_size and key not in self.cache:
             self.remove_oldest_lru()
@@ -37,7 +36,9 @@ class NCache(AbstractBaseNCache):
                 oldest = key
         self.cache.pop(oldest)
 
-    def add_mru(self, key, value):
+
+class NCacheMRU(AbstractBaseNCache):
+    def add_to_cache(self, key, value):
         # TODO check key/values for rules
         if len(self.cache) >= self.cache_size and key not in self.cache:
             self.remove_newest_mru()
@@ -54,13 +55,14 @@ class NCache(AbstractBaseNCache):
         self.cache.pop(newest)
 
 
-
-
 if __name__ == '__main__':
-    cache_test = NCache(5)
     keyz = [x for x in range(1, 10)]
     valuez = [x for x in range(101, 110)]
+
+    LRU_cache_test = NCacheLRU(5)
+    NRU_cache_test = NCacheMRU(5)
+
     for _, __ in zip(keyz, valuez):
-        cache_test.add_lru(_, __)
-    pprint(cache_test.cache)
+        NRU_cache_test.add_to_cache(_, __)
+    pprint(NRU_cache_test.cache)
 
