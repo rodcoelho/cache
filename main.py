@@ -6,7 +6,7 @@ import datetime
 from pprint import pprint
 
 
-class AbstractBaseNCache:
+class AbstractBaseCache:
     def __init__(self, n):
         self.cache = {}
         self.cache_size = n
@@ -22,11 +22,11 @@ class AbstractBaseNCache:
     def parent_add_in_next_iteration(self):
         # change this function to add_to_cache
         # see this link for next steps - https://stackoverflow.com/a/38262573/9220192
-        # goal is to create add_to_cache
+        # goal is to create add_to_cache as a parent for children to inherit from
         pass
 
 
-class NCacheLRU(AbstractBaseNCache):
+class CacheLRU(AbstractBaseCache):
     def add_to_cache(self, key, value):
         # TODO 1 check key/values for rules
         # TODO 2 improve the if statement to take into account what would happen if cache HAS the key
@@ -45,7 +45,7 @@ class NCacheLRU(AbstractBaseNCache):
         self.cache.pop(oldest)
 
 
-class NCacheMRU(AbstractBaseNCache):
+class CacheMRU(AbstractBaseCache):
     def add_to_cache(self, key, value):
         # TODO 1 check key/values for rules
         # TODO 2 improve the if statement to take into account what would happen if cache HAS the key
@@ -68,10 +68,10 @@ if __name__ == '__main__':
     keyz = [x for x in range(1, 10)]
     valuez = [x for x in range(101, 110)]
 
-    LRU_cache_test = NCacheLRU(5)
-    NRU_cache_test = NCacheMRU(5)
+    LRU_test = CacheLRU(5)
+    NRU_test = CacheMRU(5)
 
     for _, __ in zip(keyz, valuez):
-        NRU_cache_test.add_to_cache(_, __)
-    pprint(NRU_cache_test.cache)
+        NRU_test.add_to_cache(_, __)
+    pprint(NRU_test.cache)
 
