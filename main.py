@@ -4,7 +4,11 @@ import time, datetime
 from pprint import pprint
 
 
-class NCache:
+class AbstractBaseNCache:
+    pass
+
+
+class NCache(AbstractBaseNCache):
 
     def __init__(self, n):
         self.cache = {}
@@ -14,8 +18,8 @@ class NCache:
         self.key_type = None
         self.value_type = None
 
-    def __contains__(self, key):
-        return key in self.cache
+    # def __contains__(self, key):
+    #     return key in self.cache
 
     def add_lru(self, key, value):
         # TODO check key/values for rules
@@ -50,11 +54,13 @@ class NCache:
         self.cache.pop(newest)
 
 
+
+
 if __name__ == '__main__':
     cache_test = NCache(5)
     keyz = [x for x in range(1, 10)]
     valuez = [x for x in range(101, 110)]
     for _, __ in zip(keyz, valuez):
-        cache_test.add_mru(_, __)
+        cache_test.add_lru(_, __)
     pprint(cache_test.cache)
 
