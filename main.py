@@ -28,18 +28,31 @@ class AbstractBaseCache:
 
 class CacheLRU(AbstractBaseCache):
     def add_to_cache(self, key, value):
-        # TODO 1 check key/values for rules
-        # TODO 2 improve the if statement to take into account what would happen if cache HAS the key
-        if len(self.cache) >= self.cache_size and key not in self.cache:
-            self.remove_oldest_lru()
+        # check if cache has anything in it
+        if len(self.cache) == 0:
+            # cache is empty
+            # set key and value type
+            self.key_type, self.value_type = type(key), type(value)
+            self.cache[key] = {'conventional_time': datetime.datetime.now(), 'unix_time': time.time(), 'value': value}
 
-        self.cache[key] = {'conventional_time': datetime.datetime.now(), 'unix_time': time.time(), 'value': value}
+        else:
+            # cache is not empty
+            # check if key and value are of correct type
+            if type(key) == self.key_type and type(value) == self.value_type:
+                # check size
+                if len(self.cache) >= self.cache_size and key not in self.cache:
+                    self.remove_oldest_lru()
+                    self.cache[key] = {'conventional_time': datetime.datetime.now(), 'unix_time': time.time(), 'value': value}
 
     def remove_oldest_lru(self):
         oldest = None
         for key in self.cache:
             if oldest is None:
-                oldest = key
+                if key is not None:
+                    oldest = key
+                else:
+                    pass
+                    # FIXME edge case for if key == None
             elif self.cache[key]['conventional_time'] < self.cache[oldest]['conventional_time']:
                 oldest = key
         self.cache.pop(oldest)
@@ -47,18 +60,31 @@ class CacheLRU(AbstractBaseCache):
 
 class CacheMRU(AbstractBaseCache):
     def add_to_cache(self, key, value):
-        # TODO 1 check key/values for rules
-        # TODO 2 improve the if statement to take into account what would happen if cache HAS the key
-        if len(self.cache) >= self.cache_size and key not in self.cache:
-            self.remove_newest_mru()
+        # check if cache has anything in it
+        if len(self.cache) == 0:
+            # cache is empty
+            # set key and value type
+            self.key_type, self.value_type = type(key), type(value)
+            self.cache[key] = {'conventional_time': datetime.datetime.now(), 'unix_time': time.time(), 'value': value}
 
-        self.cache[key] = {'conventional_time': datetime.datetime.now(), 'unix_time': time.time(), 'value': value}
+        else:
+            # cache is not empty
+            # check if key and value are of correct type
+            if type(key) == self.key_type and type(value) == self.value_type:
+                # check size
+                if len(self.cache) >= self.cache_size and key not in self.cache:
+                    self.remove_newest_mru()
+                    self.cache[key] = {'conventional_time': datetime.datetime.now(), 'unix_time': time.time(), 'value': value}
 
     def remove_newest_mru(self):
         newest = None
         for key in self.cache:
             if newest is None:
-                newest = key
+                if key is not None:
+                    oldest = key
+                else:
+                    pass
+                    # FIXME edge case for if key == None
             elif self.cache[key]['conventional_time'] > self.cache[newest]['conventional_time']:
                 newest = key
         self.cache.pop(newest)
