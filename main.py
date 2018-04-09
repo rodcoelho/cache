@@ -42,7 +42,10 @@ class CacheLRU(AbstractBaseCache):
                 # check size
                 if len(self.cache) >= self.cache_size and key not in self.cache:
                     self.remove_oldest_lru()
-                    self.cache[key] = {'conventional_time': datetime.datetime.now(), 'unix_time': time.time(), 'value': value}
+                self.cache[key] = {'conventional_time': datetime.datetime.now(), 'unix_time': time.time(), 'value': value}
+            else:
+                # key or value types are wrong
+                pass
 
     def remove_oldest_lru(self):
         oldest = None
@@ -74,14 +77,17 @@ class CacheMRU(AbstractBaseCache):
                 # check size
                 if len(self.cache) >= self.cache_size and key not in self.cache:
                     self.remove_newest_mru()
-                    self.cache[key] = {'conventional_time': datetime.datetime.now(), 'unix_time': time.time(), 'value': value}
+                self.cache[key] = {'conventional_time': datetime.datetime.now(), 'unix_time': time.time(), 'value': value}
+            else:
+                # key or value types are wrong
+                pass
 
     def remove_newest_mru(self):
         newest = None
         for key in self.cache:
             if newest is None:
                 if key is not None:
-                    oldest = key
+                    newest = key
                 else:
                     pass
                     # FIXME edge case for if key == None
@@ -95,9 +101,9 @@ if __name__ == '__main__':
     valuez = [x for x in range(101, 110)]
 
     LRU_test = CacheLRU(5)
-    NRU_test = CacheMRU(5)
+    MRU_test = CacheMRU(5)
 
     for _, __ in zip(keyz, valuez):
-        NRU_test.add_to_cache(_, __)
-    pprint(NRU_test.cache)
+        LRU_test.add_to_cache(_, __)
+        pprint(LRU_test.cache)
 
