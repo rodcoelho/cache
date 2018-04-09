@@ -20,7 +20,7 @@ setup(
     #
     # Where it will live on PyPI: https://pypi.org/project/sampleproject/
     #
-    name='sampleproject',  # Required
+    name='ttdcache',  # Required
 
     # Versions should comply with PEP 440:
     # https://www.python.org/dev/peps/pep-0440/
@@ -30,7 +30,7 @@ setup(
     # This is a one-line description or tagline of what your project does. This
     # corresponds to the "Summary" metadata field:
     # https://packaging.python.org/specifications/core-metadata/#summary
-    description='A sample Python project',  # Required
+    description='A python cache project project',  # Required
 
     # This is an optional longer description of your project that represents
     # the body of text which users will see when they visit PyPI.
