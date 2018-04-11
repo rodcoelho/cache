@@ -25,7 +25,7 @@ setup(
     # Versions should comply with PEP 440:
     # https://www.python.org/dev/peps/pep-0440/
 
-    version='1.0.0',  # Required
+    version='1.1.0.dev1',  # Required
 
     # This is a one-line description or tagline of what your project does. This
     # corresponds to the "Summary" metadata field:
@@ -40,7 +40,7 @@ setup(
     #
     # This field corresponds to the "Description" metadata field:
     # https://packaging.python.org/specifications/core-metadata/#description-optional
-    # long_description=long_description,  # Optional
+    long_description=long_description,  # Optional
 
     # Denotes that our long_description is in Markdown; valid values are
     # text/plain, text/x-rst, and text/markdown
@@ -62,11 +62,11 @@ setup(
 
     # This should be your name or the name of the organization which owns the
     # project.
-    # author='The Python Packaging Authority',  # Optional
+    author='rodcoelho',  # Optional
 
     # This should be a valid email address corresponding to the author listed
     # above.
-    # author_email='pypa-dev@googlegroups.com',  # Optional
+    author_email='rodcpython@gmail.com',  # Optional
 
     # Classifiers help users find your project by categorizing it.
     #

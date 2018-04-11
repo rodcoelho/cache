@@ -10,8 +10,8 @@ class AbstractBaseCache:
     def __init__(self, n):
         self.cache = {}
         self.cache_size = n
-        # TODO see TODO's below
-        # use isinstance() or type() for key/value types
+        self.cache_type = None
+        # TODO add key_type change option
         self.key_type = None
         self.value_type = None
 
@@ -27,7 +27,7 @@ class AbstractBaseCache:
 
 
 class CacheLRU(AbstractBaseCache):
-    def add_to_cache(self, key, value):
+    def add(self, key, value):
         # check if cache has anything in it
         if len(self.cache) == 0:
             # cache is empty
@@ -62,7 +62,7 @@ class CacheLRU(AbstractBaseCache):
 
 
 class CacheMRU(AbstractBaseCache):
-    def add_to_cache(self, key, value):
+    def add(self, key, value):
         # check if cache has anything in it
         if len(self.cache) == 0:
             # cache is empty
@@ -96,6 +96,10 @@ class CacheMRU(AbstractBaseCache):
         self.cache.pop(newest)
 
 
+class CustomCache(AbstractBaseCache):
+    pass
+
+
 if __name__ == '__main__':
     keyz = [x for x in range(1, 10)]
     valuez = [x for x in range(101, 110)]
@@ -104,6 +108,6 @@ if __name__ == '__main__':
     MRU_test = CacheMRU(5)
 
     for _, __ in zip(keyz, valuez):
-        LRU_test.add_to_cache(_, __)
+        LRU_test.add(_, __)
         pprint(LRU_test.cache)
 
