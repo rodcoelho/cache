@@ -30,7 +30,7 @@ TDDCache and redefining the `algo` function. For example:
     from ttdcache import TTDCache
     class CustomCache(TTDCache):
         def algo(self):
-            # replacement logic goes here
+            # replacement algo 
     ...
     c = CustomCache(10)
     

@@ -17,7 +17,6 @@ class TTDCache:
         return key in self.cache
 
     def get(self, key):
-
         # if key is in cache, return value and update unix, time, and count
         if key in self.cache:
             value = self.cache[key]['value']
@@ -78,4 +77,7 @@ class TTDCache:
                 elif self.cache[key]['conventional_time'] > self.cache[newest]['conventional_time']:
                     newest = key
             self.cache.pop(newest)
+
+    def clear_cache(self):
+        self.cache = {}
 
