@@ -10,10 +10,6 @@ class AbstractBaseCache:
     def __init__(self, n):
         self.cache = {}
         self.cache_size = n
-        self.cache_type = None
-        # TODO add key_type change option
-        self.key_type = None
-        self.value_type = None
 
     # __contains__ allows us to do something like: if x in object --> returns True or False
     def __contains__(self, key):
