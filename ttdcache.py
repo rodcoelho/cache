@@ -25,11 +25,11 @@ class TTDCache:
             self.cache[key]['conventional_time'] = datetime.datetime.now()
             self.cache[key]['count'] += 1
             return value
+
         # if key not in cache, get from database, save to cache
         else:
-            # here is where you would query database
-            # since there is no database, we will generate a random number for the value
-            value = randint(0, 10000)
+            # query database
+            value = self.query_database(key)
 
             # check if cache is at capacity
             if len(self.cache) >= self.cache_size:
@@ -43,6 +43,12 @@ class TTDCache:
                 'conventional_time': datetime.datetime.now(),
                 'count': 1
             }
+            return self.cache[key]['value']
+
+    def query_database(self, key):
+        # fake database query
+        value = str(randint(0, 10000)) + str(key)
+        return value
 
     def algo(self):
         # if LRU, pop the oldest
