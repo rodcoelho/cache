@@ -10,7 +10,7 @@ Clone the private repository:
 `$ git clone https://github.com/rodcoelho/cache_project.git`
 
 
-#### Step 2: Setup - Instantiate and customize your cache settings
+#### Step 2: Instantiate and customize your cache settings
 
 First, you will need to create a new object that inherits from TTDCache to override the query_database method. 
 Currently, the query_database method queries a fake database.  
@@ -19,8 +19,9 @@ A successful implementation looks like this:
     from ttdcache import TTDCache           # import TTDCache, our abstract base cache
     class YourCustomCache(TTDCache):        # create a custom cache that inherits from TTDCache
         def query_database(self, key):      # override the query_database method
-            # your code                     # this will tell the object what query to make if key/value is not in cache
-                                            # so perhaps something like orm.get_from_database(key)
+            # your code                     # this will tell the object what query to perform
+                                            # so perhaps something like value = orm.get_from_database(key)
+            return value                    # make sure to return the value
     c = YourCustomCache(10)                 # then instantiate the object for use in production environment
     
 Here we've create a cache `c` that has a maximum size of 10 items. The default replacement algorithm is set to 'LRU',
@@ -64,7 +65,7 @@ Now that your cache is customized and instantiated, let's check to see how it wo
 
 What happens if we include this into our production code?
     
-1) `c.get(key)` will check to see if the key, `cache_key_10948`, is in the cache. If the key is in cache, it will update
+1) `c.get(key)` will check to see if the key, `key_10948`, is in the cache. If the key is in cache, it will update
  the 'metadata' and return the value. The 'metadata' is the unix time of the query and a counter for number of queries.
  Unix time and the counter are being collected so that in the future we can alter the replacement algorithm so that 
  we can remove items from the cache by count and by unix time if more than one item have the same count.
