@@ -1,31 +1,29 @@
 #!/usr/bin/env python3
 
-import time
-import datetime
-from random import randint
-from pprint import pprint
+import time                                 # import for getting unix time
+import datetime                             # import for getting time
+from random import randint                  # import for generating fake database queries
 
 
 class TTDCache:
     def __init__(self, n):
-        self.cache = {}
-        self.cache_size = n
-        self.replacement_algo = 'LRU'
+        self.cache = {}                     # the cache
+        self.cache_size = n                 # the cache's maximum capacity
+        self.replacement_algo = 'LRU'       # the cache's replacement method for maintaining capacity
 
-    # __contains__ allows us to do something like: if x in object --> returns True or False
-    def __contains__(self, key):
-        return key in self.cache
+    def __contains__(self, key):            # allows us to do something like: if x in object
+        return key in self.cache            # returns True or False
 
     def get(self, key):
-        # if key is in cache, return value and update unix, time, and count
+        # if key is in cache, return value
         if key in self.cache:
             value = self.cache[key]['value']
-            self.cache[key]['unix'] = time.time()
-            self.cache[key]['conventional_time'] = datetime.datetime.now()
-            self.cache[key]['count'] += 1
+            self.cache[key]['unix'] = time.time()                               # update unix time of query
+            self.cache[key]['conventional_time'] = datetime.datetime.now()      # update time of query
+            self.cache[key]['count'] += 1                                       # increase counter for num of queries
             return value
 
-        # if key not in cache, get from database, save to cache
+        # if key not in cache, get from database and save to cache
         else:
             # query database
             value = self.query_database(key)
@@ -35,7 +33,7 @@ class TTDCache:
                 # if at capacity, then call replacement algo function
                 self.algo()
 
-            # store key/value in cache
+            # store key/value in cache for future use
             self.cache[key] = {
                 'value': value,
                 'unix': time.time(),
@@ -46,6 +44,7 @@ class TTDCache:
 
     def query_database(self, key):
         # fake database query
+        # should be replaced with a real query to a database
         value = str(randint(0, 10000)) + str(key)
         return value
 
@@ -79,5 +78,6 @@ class TTDCache:
             self.cache.pop(newest)
 
     def clear_cache(self):
+        # clear cache is important if the database is altered and we can't trust the cache anymore
         self.cache = {}
 

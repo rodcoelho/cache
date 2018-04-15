@@ -59,7 +59,7 @@ a custom replacement algorithm.
 
 Now that your cache is customized and instantiated, let's check to see how it works.
 
-    value = c.get('cache_key_10948')
+    value = c.get('key_10948')
     
 
 What happens if we include this into our production code?
