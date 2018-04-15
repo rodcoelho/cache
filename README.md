@@ -53,16 +53,20 @@ You can even change `self.replacement_algo` to a name you like but note that thi
 a custom replacement algorithm.
 
 
-#### What happens when you use your cache
+#### How the cache works
 
-Now that your cache is ready, you can check if a key is in the cache:
+Now that your cache is customized and instantiated, let's check to see if a key of interest is in the cache:
 
     value = c.get('cache_key_10948')
     
-What will happen is `c.get(key)` will check to see if the key is in the cache. If it is, it will update cache's metadata and 
-will return the value. The 'metadata' is unix time of query and a counter for number of queries. If the key is NOT in
-the cache, it will run `self.query_database(key)` and query the database for the value we are looking for. Then it will
-check the cache's size to see there is enough room for more data. If the cache is at capacity, it will make room for
+
+What happens?
+    
+1) `c.get(key)` will check to see if the key is in the cache. If the key is in cache, update 'metadata' and return value. The 'metadata' is unix time of query and a counter for number of queries.
+
+2) If the key is NOT in the cache, it will run `self.query_database(key)` and query the database for the value we are looking for. 
+
+3) Then it will check the cache's size to see there is enough room for more data. If the cache is at capacity, it will make room for
 the new data point. Lastly, it will add the key/value pair to the cache and return the value for use. 
 
 
