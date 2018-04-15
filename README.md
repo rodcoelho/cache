@@ -1,4 +1,4 @@
-# Cache
+# TTDCache
 
 A customizable cache implementation with two options - LRU and MRU.
 
@@ -12,15 +12,15 @@ Clone the private repository:
 
 #### Step 2: Setup - Import, instantiate, and customize your cache
 
-First, you will need to create a new object that inherits from TTDCache to override the query method. 
+First, you will need to create a new object that inherits from TTDCache to override the query method (currently, the method queries a fake database).
 It will look like this:
 
-    from ttdcache import TTDCache       # imports our abstract base cache
-    class YourCustomCache(TTDCache):    # create your custom cache that inherits from TTDCache
-        def query_database(self, key):  # override the query_database method
-            # your code                 # this will tell the object what query to make if key/value is not in cache
-                                        # so perhaps something like orm.get_from_database(key)
-    c = YourCustomCache(10)             # then instantiate the object
+    from ttdcache import TTDCache           # imports our abstract base cache
+    class YourCustomCache(TTDCache):        # create your custom cache that inherits from TTDCache
+        def query_database(self, key):      # override the query_database method
+            # your code                     # this will tell the object what query to make if key/value is not in cache
+                                            # so perhaps something like orm.get_from_database(key)
+    c = YourCustomCache(10)                 # then instantiate the object
     
 Here we've create a cache `c` that has a maximum size of 10 items. The default replacement algorithm is set to 'LRU',
 or Least Recently Used, but you can also change the replacement algorithm to MRU by altering self.replacement_algo:
@@ -31,7 +31,7 @@ or Least Recently Used, but you can also change the replacement algorithm to MRU
     ...
     ...
     c = TTDCache(10)
-    self.replacement_algo = 'MRU'       # this changes the replacement algorithm from LRU (default) to MRU
+    self.replacement_algo = 'MRU'           # this changes the replacement algorithm from LRU (default) to MRU
     
 
 #### Optional: Custom Replacement Algorithms
@@ -45,8 +45,8 @@ TDDCache and redefining the `algo` function. For example:
     ...
     ...
         def algo(self):
-            # your code                 # your custom replacement algorithm goes here, like FIFO for example
-                                        # this will override the parent class default LRU replacement algorithm
+            # your code                     # your custom replacement algorithm goes here, like FIFO for example
+                                            # this will override the parent class default LRU replacement algorithm
     c = CustomCache(10)
     
 You can even change `self.replacement_algo` to a name you like but note that this is not necessary if you are creating
