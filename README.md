@@ -33,7 +33,7 @@ self.replacement_algo after you instantiate the cache object:
         def query_database(self, key):
     ...
     ...
-    c = TTDCache(10)
+    c = YourCustomCache(10)
     self.replacement_algo = 'MRU'           # this changes the replacement algorithm from LRU (default) to MRU
     
 
@@ -50,7 +50,7 @@ TDDCache and redefining the `algo` function. For example:
         def algo(self):
             # your code                     # your custom replacement algorithm goes here, like FIFO for example
                                             # this will override the parent class default LRU replacement algorithm
-    c = CustomCache(10)
+    c = YourCustomCache(10)
     
 You can even change `self.replacement_algo` to a name you like but note that this is not necessary if you are creating
 a custom replacement algorithm.
