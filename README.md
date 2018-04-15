@@ -56,6 +56,11 @@ You can even change `self.replacement_algo` to a name you like but note that thi
 a custom replacement algorithm.
 
 
+#### Optional: Clear cache
+
+What happens if the database is altered? The cache data is compromised. Use the `.clear_cache()` method.
+
+
 #### How the cache works
 
 Now that your cache is customized and instantiated, let's check to see how it works.
