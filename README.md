@@ -10,20 +10,22 @@ Clone the private repository:
 `$ git clone https://github.com/rodcoelho/cache_project.git`
 
 
-#### Step 2: Setup - Import, instantiate, and customize your cache
+#### Step 2: Setup - Instantiate and customize your cache settings
 
-First, you will need to create a new object that inherits from TTDCache to override the query method (currently, the method queries a fake database).
-It will look like this:
+First, you will need to create a new object that inherits from TTDCache to override the query_database method. 
+Currently, the query_database method queries a fake database.  
+A successful implementation looks like this:
 
-    from ttdcache import TTDCache           # imports our abstract base cache
-    class YourCustomCache(TTDCache):        # create your custom cache that inherits from TTDCache
+    from ttdcache import TTDCache           # import TTDCache, our abstract base cache
+    class YourCustomCache(TTDCache):        # create a custom cache that inherits from TTDCache
         def query_database(self, key):      # override the query_database method
             # your code                     # this will tell the object what query to make if key/value is not in cache
                                             # so perhaps something like orm.get_from_database(key)
-    c = YourCustomCache(10)                 # then instantiate the object
+    c = YourCustomCache(10)                 # then instantiate the object for use in production environment
     
 Here we've create a cache `c` that has a maximum size of 10 items. The default replacement algorithm is set to 'LRU',
-or Least Recently Used, but you can also change the replacement algorithm to MRU by altering self.replacement_algo:
+or Least Recently Used, but you can also change the replacement algorithm to MRU, or Most Recently Used, by altering 
+self.replacement_algo after you instantiate the cache object:
     
     from ttdcache import TTDCache
     class YourCustomCache(TTDCache):
@@ -55,18 +57,22 @@ a custom replacement algorithm.
 
 #### How the cache works
 
-Now that your cache is customized and instantiated, let's check to see if a key of interest is in the cache:
+Now that your cache is customized and instantiated, let's check to see how it works.
 
     value = c.get('cache_key_10948')
     
 
-What happens?
+What happens if we include this into our production code?
     
-1) `c.get(key)` will check to see if the key is in the cache. If the key is in cache, update 'metadata' and return value. The 'metadata' is unix time of query and a counter for number of queries.
+1) `c.get(key)` will check to see if the key, `cache_key_10948`, is in the cache. If the key is in cache, it will update
+ the 'metadata' and return the value. The 'metadata' is the unix time of the query and a counter for number of queries.
+ Unix time and the counter are being collected so that in the future we can alter the replacement algorithm so that 
+ we can remove items from the cache by count and by unix time if more than one item have the same count.
 
-2) If the key is NOT in the cache, it will run `self.query_database(key)` and query the database for the value we are looking for. 
+2) If the key is NOT in the cache, it will run `self.query_database(key)` and query the database for the value we are 
+looking for. 
 
-3) Then it will check the cache's size to see there is enough room for more data. If the cache is at capacity, it will make room for
-the new data point. Lastly, it will add the key/value pair to the cache and return the value for use. 
-
+3) Then it will check the cache's size to see there is enough room for more data to be added to the cache. 
+If the cache is at capacity, it will make room for the new data point. Lastly, it will add the key/value pair to the 
+cache and return the value for use. 
 
