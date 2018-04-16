@@ -1,6 +1,7 @@
 # TTDCache
 
-A customizable cache implementation with two options - LRU and MRU.
+A customizable cache implementation with two options - LRU and MRU - built to alleviate querying a database multiple 
+times for the same query, ultimately improving your application's execution time. 
 
 
 #### Step 1: Clone
@@ -13,12 +14,15 @@ Clone the private repository:
 #### Step 2: Instantiate and customize your cache settings
 
 First, you will need to create a new object that inherits from TTDCache to override the query_database method. 
-Currently, the query_database method queries a fake database.  
-A successful implementation looks like this:
+
+VERY IMPORTANT: Currently, the query_database method queries a fake database. Override this method with a function that
+queries your database (or calls an API).
+
+A successful instantiation looks like this:
 
     from ttdcache import TTDCache           # import TTDCache, our abstract base cache
     class YourCustomCache(TTDCache):        # create a custom cache that inherits from TTDCache
-        def query_database(self, key):      # override the query_database method
+        def query_database(self, key):      # VERY IMPORTANT: override the query_database method
             # your code                     # this will tell the object what query to perform
                                             # so perhaps something like value = orm.get_from_database(key)
             return value                    # make sure to return the value
@@ -31,6 +35,7 @@ self.replacement_algo after you instantiate the cache object:
     from ttdcache import TTDCache
     class YourCustomCache(TTDCache):
         def query_database(self, key):
+            # your custom query code
     ...
     ...
     c = YourCustomCache(10)
@@ -48,7 +53,7 @@ TDDCache and redefining the `algo` function. For example:
     ...
     ...
         def algo(self):
-            # your code                     # your custom replacement algorithm goes here, like FIFO for example
+            # your new replacement algo     # your custom replacement algorithm goes here, like FIFO for example
                                             # this will override the parent class default LRU replacement algorithm
     c = YourCustomCache(10)
     
@@ -60,10 +65,14 @@ a custom replacement algorithm.
 
 What happens if the database is altered? The cache data is compromised. Use the `.clear_cache()` method.
 
+For example, if we used the code in the example above, simply call `c.clear_cache()`.
+
 
 #### How the cache works
 
 Now that your cache is customized and instantiated, let's check to see how it works.
+
+Assume we used the code in the example above.
 
     value = c.get('key_10948')
     
@@ -71,9 +80,9 @@ Now that your cache is customized and instantiated, let's check to see how it wo
 What happens if we include this into our production code?
     
 1) `c.get(key)` will check to see if the key, `key_10948`, is in the cache. If the key is in cache, it will update
- the 'metadata' and return the value. The 'metadata' is the unix time of the query and a counter for number of queries.
+ the 'metadata' and return the value (The 'metadata' is the unix time of the query and a counter for number of queries.
  Unix time and the counter are being collected so that in the future we can alter the replacement algorithm so that 
- we can remove items from the cache by count and by unix time if more than one item have the same count.
+ we can remove items from the cache by count and by unix time if more than one item have the same count.)
 
 2) If the key is NOT in the cache, it will run `self.query_database(key)` and query the database for the value we are 
 looking for. 
